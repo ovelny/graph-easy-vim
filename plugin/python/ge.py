@@ -63,7 +63,7 @@ def DoGen():
     if ret is None:
         return
     s, e = ret
-    codeb = "\n".join(vim.current.buffer[s+1:e])
+    codeb = "\n".join(vim.current.buffer[s + 1 : e])
 
     # print("S = {},E = {}".format(s, e))
     # print("Graph Code Block is\n{}\n".format(codeb))
@@ -76,22 +76,17 @@ def DoGen():
         return
 
     # Clear the range and append the graph
-    r = vim.current.buffer.range(s, e+1)
-    r[:] = None
+    r = vim.current.buffer.range(s, e + 1)
     r.append("")
-    r.append("{{{")
     for line in graph.split("\n"):
         r.append(line)
-    r.append("}}}")
 
 
 def _callExternal(buf):
-    cmdarg = shlex.split("/usr/bin/vendor_perl/graph-easy --as=ascii")
+    cmdarg = shlex.split("/usr/bin/graph-easy --as=ascii")
     proc = subprocess.Popen(
-        cmdarg,
-        stdin=subprocess.PIPE,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE)
+        cmdarg, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+    )
     try:
         out, err = proc.communicate(bytes(buf, "UTF-8"), timeout=2)
         if proc.returncode != 0:
